@@ -1,0 +1,41 @@
+WIM Acesso ao sistema - Permissões.
+
+Definição:
+Especifica através do userid e Group_id o tipo de acesso ao sistema.
+
+Permission type:
+Tipos de permissão de acesso ao sistema:
+0 - Acesso limitado a visualizar telas de dados apenas.
+1 - Acesso limitado a visualizar as telas de dados e de configurações do sistema.
+2 - Acesso limitado a visualizar as telas de dados e alterar as configurações do sistema.
+3 - Acesso ilimitado, pode visualizar as telas de dados, alterar as configurações do sistema a acessar os arquivos de log.
+
+Permission name:
+Type 0 - "Acesso restrito"
+Type 1 - "Acesso limitado"
+Type 2 - "Acesso administrador"
+Type 3 - "Acesso master"
+
+
+user_groups:
+CREATE TABLE `user_groups` (
+  `group_id` int(11) NOT NULL,						// Auto increment - Primary
+  `group_name` varchar(30) NOT NULL,				// Descrição abaixo
+  `obs` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+user_groups:
+	group_name:
+		"Operadores" 		-> Acesso restrito 			- Type 0
+		"Avaliadores" 		-> Acesso limitado 			- Type 1
+		"Administradores" 	-> Acesso administrador 	- Type 2
+		"Master"			-> Acesso master			- Type 3
+		
+
+
+Group_id:
+
+
+Tabelas:
+"users"
+
