@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2017 at 11:35 AM
+-- Generation Time: Oct 17, 2017 at 12:02 PM
 -- Server version: 5.7.14
 -- PHP Version: 7.0.10
 
@@ -39,8 +39,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userid`, `group_id`, `username`, `password`, `reg_date`) VALUES
-(1, 1, 'Antonio', 'motorola', 1234),
-(2, 2, 'Vanessa', 'motorola', 1234);
+(1, 1, 'ascalmom', '51e822c50cc62cdbdb850a439ea75b6d45ac487b', 20171017),
+(2, 2, 'Vanessa', '51e822c50cc62cdbdb850a439ea75b6d45ac487b', 20171017);
 
 --
 -- Indexes for dumped tables
@@ -50,7 +50,8 @@ INSERT INTO `users` (`userid`, `group_id`, `username`, `password`, `reg_date`) V
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`userid`);
+  ADD PRIMARY KEY (`userid`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
