@@ -3,6 +3,7 @@ WIM Acesso ao sistema - Permissões.
 Definição:
 Especifica através do userid e Group_id o tipo de acesso ao sistema.
 
+Tabela 1.1 - Permission Type
 Permission type:
 Tipos de permissão de acesso ao sistema:
 0 - Acesso limitado a visualizar telas de dados apenas.
@@ -10,32 +11,55 @@ Tipos de permissão de acesso ao sistema:
 2 - Acesso limitado a visualizar as telas de dados e alterar as configurações do sistema.
 3 - Acesso ilimitado, pode visualizar as telas de dados, alterar as configurações do sistema a acessar os arquivos de log.
 
+Tabela 1.2 - Permission Name
 Permission name:
 Type 0 - "Acesso restrito"
 Type 1 - "Acesso limitado"
 Type 2 - "Acesso administrador"
 Type 3 - "Acesso master"
 
+Tabela 1.3 - User Groups
+user_groups: group_name:
+"Operadores"        -> Acesso restrito         - Type 0
+"Avaliadores"       -> Acesso limitado         - Type 1
+"Administradores"   -> Acesso administrador    - Type 2
+"Master"            -> Acesso master           - Type 3
 
-user_groups:
+
+
+Tabelas do Banco de Dados
+
+"user_groups"
 CREATE TABLE `user_groups` (
-  `group_id` int(11) NOT NULL,						// Auto increment - Primary
-  `group_name` varchar(30) NOT NULL,				// Descrição abaixo
+  `group_id` int(11) NOT NULL,                      // Auto increment - Primary
+  `group_name` varchar(30) NOT NULL,                // Descrição abaixo
   `obs` varchar(50) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-user_groups:
-	group_name:
-		"Operadores" 		-> Acesso restrito 			- Type 0
-		"Avaliadores" 		-> Acesso limitado 			- Type 1
-		"Administradores" 	-> Acesso administrador 	- Type 2
-		"Master"			-> Acesso master			- Type 3
-		
 
-
-Group_id:
-
-
-Tabelas:
 "users"
+CREATE TABLE `users` (
+  `userid` int(11) NOT NULL,                        // Criado a cada nova entrada
+  `group_id` int(11) NOT NULL,                      // Criado pelo sistema
+  `username` varchar(20) NOT NULL,                  // Criado pelo usuário - Unico
+  `password` varchar(50) NOT NULL,                  // Criado pelo usuário - protegido por SHA1
+  `reg_date` int(11) NOT NULL                       // Data de registro - Formato DATE mysql - YYYYMMDD
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+"user_permissions"
+CREATE TABLE `user_permissions` (
+  `pid` int(11) NOT NULL,                           // Criado a cada nova entrada
+  `permission_name` varchar(30) NOT NULL,           // Tabela 1.2
+  `permission_type` int(1) NOT NULL,                // Tabela 1.1
+  `userid` int(11) NOT NULL,					    // Vem da tabela users - criado pelo sistema
+  `obs` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+"group_permissions"
+CREATE TABLE `group_permissions` (
+  `pid` int(11) NOT NULL,                            // Criado a cada nova entrada
+  `permission_name` varchar(30) NOT NULL,            // Tabela 1.2
+  `permission_type` int(1) NOT NULL,                 // Tabela 1.1
+  `group_id` int(11) NOT NULL,                       // Vem da tabela user_groups
+  `obs` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

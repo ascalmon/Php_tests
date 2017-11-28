@@ -46,6 +46,7 @@ class Db
                      'group_id' => $linha['group_id'],
                      'obs' => $linha['obs']
                    );
+                   var_dump($respostas);
                  }
              }else {
                return FALSE;
@@ -68,6 +69,24 @@ class Db
                  return FALSE;
                }
                break;
+               case '3':
+                   if ($count > 0){
+                      for ($i = 0; $i < mysqli_num_rows($result); $i++){
+                        $linha = mysqli_fetch_array($result);
+                        $respostas = array(
+                          'count' => $count,
+                          'userid' => $linha['userid'],
+                          'group_id' => $linha['group_id'],
+                          'username' => $linha['username'],
+                          'password' => $linha['password'],
+                          'reg_date' => $linha['reg_date']
+                        );
+                        var_dump($respostas);
+                      }
+                  }else {
+                    return FALSE;
+                  }
+                  break;
 
         }
         //var_dump($respostas);
@@ -84,6 +103,15 @@ class Acl {
    //initialize the database object here
    function __construct() {
      $this->db = new Db;
+   }
+
+
+   function getUserId($username, $password)
+   {
+     $sql = "SELECT * FROM users WHERE username='$username' AND password=SHA1('$password')";
+     echo $sql;
+     $f = $this->db->query(3,$sql);
+     return $f;
    }
 
    function check($permission,$userid,$group_id)
@@ -105,13 +133,11 @@ class Acl {
 
    function user_permissions($permission,$userid) {
       $f = $this->db->query(0,"SELECT COUNT(*) AS count FROM user_permissions WHERE permission_name='$permission' AND userid='$userid' ");
-
       If($f['count'] >0)
       {
           $this->setUserEmpty('false');
 
           $f = $this->db->query(2,"SELECT * FROM user_permissions WHERE permission_name='$permission' AND userid='$userid' ");
-
           If($f['permission_type']==0)
           {
               return false;
@@ -135,8 +161,6 @@ class Acl {
         if($f['count']>0)
         {
             $f = $this->db->query(1,"SELECT * FROM group_permissions WHERE permission_name='$permission'"); //AND group_id='$group_id' ");
-
-              //$f = $this->db->fetch();
 
               If($f['permission_type']==0)
               {
@@ -162,12 +186,13 @@ class Acl {
 }
 
 $acl = new Acl();
-If(!$acl->check("view_admin_dashboard",1,1)) {
-// user doesn't have permission to execute the following action
-//do something here
+$f = $acl->getUserId("ascalmon","motorola");
+If(!$acl->check("Acesso Master",$f['userid'],$f['group_id'])) {
+  echo "User not found.";
 }else {
-  echo "User approved to access Admin dashboard.";
+  echo "User " . $f['userid'] . " - " . $f['username'] . " Group Id " . $f['group_id'] . " approved to access WIM system.";
 }
+
 
 
 
@@ -176,7 +201,7 @@ If(!$acl->check("view_admin_dashboard",1,1)) {
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Class and Form</title>
+    <title>Access Approval</title>
     <style>
 
 

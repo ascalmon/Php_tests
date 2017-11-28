@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2017 at 11:34 AM
+-- Generation Time: Oct 17, 2017 at 12:56 PM
 -- Server version: 5.7.14
 -- PHP Version: 7.0.10
 
@@ -28,9 +28,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `group_permissions` (
   `pid` int(11) NOT NULL,
-  `permission_name` varchar(100) NOT NULL,
+  `permission_name` varchar(30) NOT NULL,
   `permission_type` int(1) NOT NULL,
-  `group_id` varchar(30) NOT NULL,
+  `group_id` int(11) NOT NULL,
   `obs` varchar(50) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -39,9 +39,9 @@ CREATE TABLE `group_permissions` (
 --
 
 INSERT INTO `group_permissions` (`pid`, `permission_name`, `permission_type`, `group_id`, `obs`) VALUES
-(1, 'view_admin_dashboard', 1, '1', ''),
-(2, 'view_admin_dashboard', 1, '2', ''),
-(3, 'view_admin_dashboard', 1, '3', '');
+(1, 'view_admin_dashboard', 1, 1, ''),
+(2, 'view_admin_dashboard', 1, 2, ''),
+(3, 'view_admin_dashboard', 1, 3, '');
 
 --
 -- Indexes for dumped tables
