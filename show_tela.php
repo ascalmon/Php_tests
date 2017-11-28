@@ -40,7 +40,7 @@ class Table{
 
 }
   function connect_db(){
-      header('Content-Type: text/html; charset=utf-8');
+      header('Content-Type: text/html; charset=utf-8');               // Caracters Latinos
           $servername = "localhost";                                  // Uso para teste no servidor local
           $username = "root";
           $password = "";
@@ -59,9 +59,13 @@ class Table{
       return $dbc;
     }
 
-    function get_medidores($dbc){
-        $sql = "SELECT * FROM `medidores` WHERE 1";
-          //$array = array();
+    function get_medidores($dbc,$cidade){
+        if ($cidade == ""){
+            $sql = "SELECT id, cidade, latitude, longitude FROM `medidores` WHERE 1";
+        }else{
+          $sql = "SELECT id, cidade, latitude, longitude FROM `medidores` WHERE cidade ='$cidade'";
+        }
+          //echo $sql;
           $result = mysqli_query($dbc, $sql);                       // Connecta com o DB e verifica se usuario existe
           if ($result != false){
               $count = mysqli_num_rows($result);
@@ -145,10 +149,35 @@ class Table{
   </head>
   <body>
     <h1> Teste de Apresentacao de telas </h1>
-
+    <form method="post">
+      <label>Cidade:</label>
+      <input type="text" name="city" placeholder="Entre nome cidade"></input>
+      <input type="submit" value="Submit">
+    </form>
     <?php
+
+    if(isset($_POST['city'])){
+      $cidade = $_POST['city'];
+      echo $cidade;
+    }
+
     $dbc = connect_db();
-    $array = get_medidores($dbc);
+    $array = get_medidores($dbc,$cidade);
+    //var_dump ($array);
+    echo "<br>";
+    echo "Id = ";
+    echo ($array[0]['id']);   //id
+    echo "<br>";
+    echo "Cidade = ";
+    echo ($array[0]['cidade']);   //id
+    echo "<br>";
+    echo "Latitude = ";
+    echo $array[0]['latitude'];   //
+    echo "<br>";
+    echo "Longitude = ";
+    echo $array[0]['longitude'];   //id
+    echo "<br>";
+
     $table = new Table;
     $columns = sizeof($array[0]);
     $lines = sizeof($array);
