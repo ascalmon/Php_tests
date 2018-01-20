@@ -16,22 +16,15 @@
     table, td {
               border: 1px solid black;
               }
-
     </style>
 
   </head>
   <body>
-    <h2>Content as Array.</h2>
-    <p>Content written as an JSON array will be converted into a JavaScript array.</p>
 
-    <p id="demo"></p>
-    <table id="myTable">
-        <tr>
-          <td>cell 1</td>
-          <td>cell 2</td>
-        </tr>
 
-</table>
+    <div id="myDynamicTable">
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
@@ -39,24 +32,98 @@
     <script>
 
       var xmlhttp = new XMLHttpRequest();
+      var tabela =document.createElement('TABLE');
+      tabela.setAttribute("id", "myTable");
+      document.body.appendChild(tabela);
+
+      var myArr;
+      var row;
       xmlhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
-              var myArr = JSON.parse(this.responseText);
-              console.log(myArr.length);
-              for (let i=0; i < myArr.length;i++){
-                //console.log("Array index = " + i);
-                var obj = myArr[i];
-                for (var key in obj){
-                  var value = obj[key];
-                  //console.log("Array index = " + i + " - " + "Key = " + key + " and value = " + value);
-                  var x = document.getElementById("myTable");
-                  //x.insertRow(0);
-                }
-              }
+              myArr = JSON.parse(this.responseText);
+              row = myArr.length;
+              console.log(row);
+              console.log(myArr[0]);
           }
       };
-      xmlhttp.open("GET", "full_list.json", true);
+      xmlhttp.open("GET", "full_list.json", false);
       xmlhttp.send();
+
+      //col = myArr[0].length;
+
+      var myTableDiv = document.getElementById("myDynamicTable");
+      var table = document.createElement('TABLE');
+      table.border='1';
+      var tableBody = document.createElement('TBODY');
+      table.appendChild(tableBody);
+      var tr = document.createElement('TR');
+      tableBody.appendChild(tr);
+      //col = myArr[0].length;
+      //console.log(myArr);
+      var key;
+      var value;
+      var col = 0;
+      var obj = myArr[0];
+      for (key in obj){
+              //value = obj[key];
+              var th = document.createElement('TH');
+              th.width='75';
+              th.appendChild(document.createTextNode(key));
+              tr.appendChild(th);
+              col++;
+      }
+      for (var j=0; j<row; j++){
+          var tr = document.createElement('TR');
+          tableBody.appendChild(tr);
+          obj = myArr[j];
+          for (key in obj){
+              value = obj[key];
+              var td = document.createElement('TD');
+              td.width='75';
+              td.appendChild(document.createTextNode(value));
+              tr.appendChild(td);
+          }
+      }
+      myTableDiv.appendChild(table);
+
+    /*function addTable(row,col) {
+
+        var myTableDiv = document.getElementById("myDynamicTable");
+
+        var table = document.createElement('TABLE');
+        table.border='1';
+
+        var tableBody = document.createElement('TBODY');
+        table.appendChild(tableBody);
+
+        var tr = document.createElement('TR');
+        tableBody.appendChild(tr);
+
+        for (var j=0; j<col; j++){
+              var th = document.createElement('TH');
+              th.width='75';
+              th.appendChild(document.createTextNode("Header " + j));
+              tr.appendChild(th);
+          }
+
+        for (var i=0; i<row; i++){
+           var tr = document.createElement('TR');
+           tableBody.appendChild(tr);
+
+
+           for (var j=0; j<col; j++){
+               var td = document.createElement('TD');
+               td.width='75';
+               td.appendChild(document.createTextNode("Cell " + i + "," + j));
+               tr.appendChild(td);
+           }
+        }
+        myTableDiv.appendChild(table);
+
+      }*/
+
+
+
 
     </script>
   </body>
