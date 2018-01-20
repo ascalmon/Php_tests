@@ -87,15 +87,13 @@ class Table{
       if ($header){
           echo "<tr>";
           foreach ($array[0] as $key => $value){
-          //for($i=0; $i<= $columns; $i++){
             echo "<th>";
-            //echo "Header " . $i;
             echo $key;
             echo "</th>";
           }
           echo "</tr>";
       }
-      //echo "<tr>";
+
       for($i=0; $i<= $lines - 1; $i++){
         echo "<tr>";
         $size = 100/$columns;
@@ -149,16 +147,18 @@ class Table{
   </head>
   <body>
     <h1> Teste de Apresentacao de telas </h1>
-    <form method="post">
+    <form method="get">
       <label>Cidade:</label>
       <input type="text" name="city" placeholder="Entre nome cidade"></input>
       <input type="submit" value="Submit">
     </form>
     <?php
 
-    if(isset($_POST['city'])){
-      $cidade = $_POST['city'];
+    if(isset($_GET['city'])){
+      $cidade = $_GET['city'];
       echo $cidade;
+    }else{
+      $cidade = "Brasilia";
     }
 
     $dbc = connect_db();
@@ -184,6 +184,22 @@ class Table{
     //echo $columns . " - " . $lines;
     //echo "<pre>" . print_r($array, true) . "</pre>";
     $table->createTable($columns,$lines,true,$array);
+    header('Location: show_tela.php?city=' . $_GET['city'] . '&lat=' . $array[0]['latitude'] . '&lng=' . $array[0]['longitude']);
     ?>
+    <div id="data1"></div>
+    <div id="data2"></div>
+    <script language="JavaScript">
+      function processForm()
+      {
+        var parameters = location.search.substring(1).split("&");
+        var temp = parameters[0].split("=");
+        lat = unescape(temp[1]);
+        var temp1 = parameters[1].split("=");
+        lng = unescape(temp1[1]);
+        document.getElementById("data1").innerHTML = "Latitude - " + lat;
+        document.getElementById("data2").innerHTML = "Longitude - " + lng;
+      }
+      processForm();
+    </script>
   </body>
 </html>
