@@ -13,8 +13,10 @@
 
 
     <style>
-    table, td {
+    table, td ,td{
               border: 1px solid black;
+              width:auto;
+              font-size:10px;
               }
     </style>
 
@@ -67,7 +69,8 @@
       for (key in obj){
               //value = obj[key];
               var th = document.createElement('TH');
-              th.width='75';
+              //th.width='auto';
+              //th.font-size = '10px';
               th.appendChild(document.createTextNode(key));
               tr.appendChild(th);
               col++;
