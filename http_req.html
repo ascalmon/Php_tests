@@ -33,61 +33,58 @@
 
     <script>
 
-      var xmlhttp = new XMLHttpRequest();
-      var tabela =document.createElement('TABLE');
-      tabela.setAttribute("id", "myTable");
-      document.body.appendChild(tabela);
+      var xmlhttp = new XMLHttpRequest();                                       // Create object of XMLHttp - Library
+      var tabela =document.createElement('TABLE');                              // Dynamically creates a HTML Table
+      tabela.setAttribute("id", "myTable");                                     // Create id for the new table
+      document.body.appendChild(tabela);                                        // Append table to HTML body
 
-      var myArr;
-      var row;
-      xmlhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-              myArr = JSON.parse(this.responseText);
-              row = myArr.length;
-              console.log(row);
-              console.log(myArr[0]);
+      var myArr;                                                                // Variable created to receive a JSON parse in an array
+      var row;                                                                  // Number of array rows
+
+      xmlhttp.onreadystatechange = function() {                                 // Http XMLHttpRequest
+          if (this.readyState == 4 && this.status == 200) {                     // Wait for state 4 and file found.
+              myArr = JSON.parse(this.responseText);                            // Move JSON file to an array
+              row = myArr.length;                                               // Number of rows created in the new array
+              //console.log(row);
+              //console.log(myArr[0]);
           }
       };
-      xmlhttp.open("GET", "full_list.json", false);
-      xmlhttp.send();
+      xmlhttp.open("GET", "full_list.json", false);                             // Open request and wait for positive response
+      xmlhttp.send();                                                           // Send request to Server
 
       //col = myArr[0].length;
 
-      var myTableDiv = document.getElementById("myDynamicTable");
-      var table = document.createElement('TABLE');
-      table.border='1';
-      var tableBody = document.createElement('TBODY');
-      table.appendChild(tableBody);
-      var tr = document.createElement('TR');
-      tableBody.appendChild(tr);
-      //col = myArr[0].length;
-      //console.log(myArr);
-      var key;
-      var value;
-      var col = 0;
-      var obj = myArr[0];
-      for (key in obj){
-              //value = obj[key];
-              var th = document.createElement('TH');
-              //th.width='auto';
-              //th.font-size = '10px';
-              th.appendChild(document.createTextNode(key));
+      var myTableDiv = document.getElementById("myDynamicTable");               // Creates a HTML div to anchor the Table
+      var table = document.createElement('TABLE');                              // Create a new HTML Table
+      table.border='1';                                                         // Border of the table on
+      var tableBody = document.createElement('TBODY');                          // Associates tableBody to HTML body
+      table.appendChild(tableBody);                                             // Append Table to body
+      var tr = document.createElement('TR');                                    // Creates TR for header
+      tableBody.appendChild(tr);                                                // Creates a child
+
+      var key;                                                                  // Variable created for the key in a "for key in "
+      var value;                                                                //Variable created for the value in a "for key in"
+
+      var obj = myArr[0];                                                       // Obj get the first row of the array and have all headers
+      for (key in obj){                                                         // Search for headers
+              var th = document.createElement('TH');                            // Creates an HTML th for headers
+              th.appendChild(document.createTextNode(key));                     // Insert array key into the table's header
               tr.appendChild(th);
-              col++;
+
       }
-      for (var j=0; j<row; j++){
-          var tr = document.createElement('TR');
+      for (var j=0; j<row; j++){                                                // Search for array values in all rows
+          var tr = document.createElement('TR');                                // Creates TR for values
           tableBody.appendChild(tr);
-          obj = myArr[j];
+          obj = myArr[j];                                                       // Search row by row of the array and fills the table data in
           for (key in obj){
               value = obj[key];
-              var td = document.createElement('TD');
+              var td = document.createElement('TD');                            // Creates an HTML td for values
               td.width='75';
-              td.appendChild(document.createTextNode(value));
+              td.appendChild(document.createTextNode(value));                   // Value to be inserted in the table
               tr.appendChild(td);
           }
       }
-      myTableDiv.appendChild(table);
+      myTableDiv.appendChild(table);                                            // Show the table at the div
 
     /*function addTable(row,col) {
 
